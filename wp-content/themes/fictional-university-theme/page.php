@@ -32,15 +32,47 @@ while(have_posts()){
         <?php }
         ?>
 
+<?php 
+//get_pages()返回的结果存到内存中，
+$testArray = get_pages(array(
+    'child_of' => get_the_ID()
+));
+//当有一个条件为真时执行
+if ($theParent or $testArray) {
 
+
+?>
       <div class="page-links">
-        <h2 class="page-links__title"><a href="#">About Us</a></h2>
+        <!-- 和上面一样，就是返回按钮那个。 -->
+        <h2 class="page-links__title"><a href="<?php echo get_permalink($theParent);?>"><?php echo get_the_title($theParent); ?></a></h2>
         <ul class="min-list">
-          <li class="current_page_item"><a href="#"><?php the_title();?></a></li>
-          <li><a href="#">Our Goals</a></li>
+        <?php //the_title();
+            // $animals = array('cat', 'dog' , 'pig');
+            // $animalsouunds = array('cat' => 'meow', 'dog' => 'bark' , 'pig' => 'oink');
+            // 仿古好不能是数值  echo $animalsouunds[0]; 
+            // echo $animalsouunds['dog'];
+            //$theParent 上面定义了变量，用来查询父ID
+            if ($theParent) {
+                $findChildrenOf = $theParent;
+            }else{
+                $findChildrenOf = get_the_ID();
+            }
+            wp_list_pages(array(
+                'title_li' => NULL,
+                'child_of' => $findChildrenOf,
+                'sort_column' => 'menu_order'
+                //编辑的时候可以填入文章的id，排序列表，默认是字母排序。
+            ));
+
+
+        ?>
+        <!-- 关联数组 -->
+          <!-- <li class="current_page_item"><a href="#"><?php //the_title();?></a></li>
+          <li><a href="#">Our Goals</a></li> -->
         </ul>
       </div>
-
+      <?php }
+        ?>
       <div class="generic-content">
 <?php the_content(); ?>
       </div>

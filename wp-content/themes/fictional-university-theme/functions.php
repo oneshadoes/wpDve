@@ -13,6 +13,9 @@ add_action('wp_enqueue_scripts','university_files');
 //这里名字不要输错.第二个函数随便起名
 
 function university_features() {
+    // register_nav_menu('headerMenuLocation','Header Menu Location');
+    // register_nav_menu('footerMenuLocationOne','页脚链接');
+    // register_nav_menu('footerMenuLocationTwo','友情链接');
     add_theme_support('title-tag');
 
 }
