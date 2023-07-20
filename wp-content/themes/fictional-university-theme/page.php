@@ -8,7 +8,7 @@ while(have_posts()){
       <div class="page-banner__content container container--narrow">
         <h1 class="page-banner__title"><?php the_title();?></h1>
         <div class="page-banner__intro">
-          <p>Learn how the school of your dreams got started.</p>
+          <p>我是page页面Learn how the school of your dreams got started.</p>
         </div>
       </div>
     </div>

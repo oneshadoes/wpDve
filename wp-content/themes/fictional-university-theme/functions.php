@@ -20,3 +20,23 @@ function university_features() {
 
 }
 add_action('after_setup_theme','university_features'); 
+
+function university_adjust_queries($query) {
+//这代码会影响整个网站的后台 $query->set('posts_per_page','1');
+if (!is_admin() AND is_post_type_archive('event') AND $query->is_main_query()){
+    // $query->set('posts_per_page','1');
+    $today = date('Ymd');//记得这个自定义函数要加上
+    $query->set('meta_key','event_date');
+    $query->set('orderby','meta_value_num');
+    $query->set('order','ASC');
+    $query->set('meta_query',array(
+        array(
+          'key' => 'event_date',
+          'compare' => '>=',
+          'value' => $today, // 用这个的话，不够灵活，我们变成对象。date('Ymd);
+          'type' => 'mumeric'
+        )
+      ));
+}
+}
+add_action('pre_get_posts', 'university_adjust_queries');

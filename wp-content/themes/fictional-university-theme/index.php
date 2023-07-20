@@ -5,7 +5,7 @@
       <div class="page-banner__content container container--narrow">
         <h1 class="page-banner__title"><?php the_title();?></h1>
         <div class="page-banner__intro">
-          <p>Learn how the school of your dreams got started.</p>
+          <p>我是index页面Learn how the school of your dreams got started.</p>
         </div>
       </div>
     </div>
@@ -30,7 +30,7 @@ while(have_posts()) {
 echo paginate_links();
 ?>  
 </div>
-    <div class="full-width-split group">
+    <!-- <div class="full-width-split group">
       <div class="full-width-split__one">
         <div class="full-width-split__inner">
           <h2 class="headline headline--small-plus t-center">Upcoming Events</h2>
@@ -87,7 +87,7 @@ echo paginate_links();
           <p class="t-center no-margin"><a href="#" class="btn btn--yellow">View All Blog Posts</a></p>
         </div>
       </div>
-    </div>
+    </div> -->
 
 
 

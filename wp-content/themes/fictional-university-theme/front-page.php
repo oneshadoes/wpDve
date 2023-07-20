@@ -15,17 +15,62 @@
         <div class="full-width-split__inner">
           <h2 class="headline headline--small-plus t-center">Upcoming Events</h2>
 
-          <div class="event-summary">
-            <a class="event-summary__date t-center" href="#">
-              <span class="event-summary__month">Mar</span>
-              <span class="event-summary__day">25</span>
+    
+          <?php 
+            $today = date('Ymd');
+            $homepageEvents = new WP_Query(array(
+              'posts_per_page' => 2, //-1会查询所有内容
+              'post_type' => 'event',
+              //排序方式
+              // 'orderby' => 'title',
+              // 'orderby' => 'rand',
+              // 'orderby' => 'post_date',
+              'meta_key' => 'event_date',
+              'orderby' => 'meta_value_num',
+              'order' => 'ASC',
+              'meta_query' => array(
+                array(
+                  'key' => 'event_date',
+                  'compare' => '>=',
+                  'value' => $today, // 用这个的话，不够灵活，我们变成对象。date('Ymd);
+                  'type' => 'mumeric'
+                )
+              )
+            ));
+            //hanv写错 have
+            while($homepageEvents->have_posts()) {
+              $homepageEvents->the_post();?>
+            
+            <div class="event-summary">
+            <a class="event-summary__date t-center" href="<?php the_permalink();?>">
+              <span class="event-summary__month"><?php
+              //返回显示的是20220712字符串，需要转换成月。 the_field('event_date');
+               $eventDate = new DateTime(get_field('event_date'));
+               echo $eventDate->format('m')
+               
+               ?></span>
+              <span class="event-summary__day"><?php  echo $eventDate->format('d')?></span>
             </a>
             <div class="event-summary__content">
-              <h5 class="event-summary__title headline headline--tiny"><a href="#">Poetry in the 100</a></h5>
-              <p>Bring poems you&rsquo;ve wrote to the 100 building this Tuesday for an open mic and snacks. <a href="#" class="nu gray">Learn more</a></p>
+              <h5 class="event-summary__title headline headline--tiny"><a href="<?php the_permalink();?>"><?php the_title();?></a></h5>
+              <p><?php 
+              //输出全部内容，不合适，只需要两行，wp_trim_words(内容，限制多少字) 两个参数
+              //the_content();
+              //使用手动摘录功能
+              // echo wp_trim_words(get_the_content(),20);
+              if (has_excerpt()) {
+                echo get_the_excerpt();
+              }else{
+                echo wp_trim_words(get_the_content(),20);
+              }
+              ?><a href="<?php the_permalink();?>" class="nu gray">Learn more</a></p>
             </div>
           </div>
-          <div class="event-summary">
+          <?php  }
+          ?>
+
+         <!-- 第二段 -->
+          <!-- <div class="event-summary">
             <a class="event-summary__date t-center" href="#">
               <span class="event-summary__month">Apr</span>
               <span class="event-summary__day">02</span>
@@ -34,9 +79,9 @@
               <h5 class="event-summary__title headline headline--tiny"><a href="#">Quad Picnic Party</a></h5>
               <p>Live music, a taco truck and more can found in our third annual quad picnic day. <a href="#" class="nu gray">Learn more</a></p>
             </div>
-          </div>
+          </div> -->
 
-          <p class="t-center no-margin"><a href="#" class="btn btn--blue">View All Events</a></p>
+          <p class="t-center no-margin"><a href="<?php echo get_post_type_archive_link('event')?>" class="btn btn--blue">View All Events</a></p>
         </div>
       </div>
       <div class="full-width-split__two">
@@ -60,7 +105,7 @@
           <!-- 第一篇 -->
           <div class="event-summary">
             <a class="event-summary__date event-summary__date--beige t-center" href="<?php the_permalink();?>">
-              <span class="event-summary__month"><?php echo the_time('M');?></span>
+              <span class="event-summary__month"><?php the_field('event_date');?></span>
               <span class="event-summary__day"><?php the_time('d');?></span>
             </a>
             <div class="event-summary__content">
@@ -68,7 +113,13 @@
               <p><?php 
               //输出全部内容，不合适，只需要两行，wp_trim_words(内容，限制多少字) 两个参数
               //the_content();
-              echo wp_trim_words(get_the_content(),20);
+              // echo wp_trim_words(get_the_content(),20);
+              if (has_excerpt()) {
+                echo get_the_excerpt();
+                // the_excerpt();
+              }else{
+                echo wp_trim_words(get_the_content(),20);
+              }
               ?><a href="<?php the_permalink();?>" class="nu gray">Read more</a></p>
             </div>
           </div>
@@ -92,7 +143,8 @@
             </div>
           </div> -->
 
-          <p class="t-center no-margin"><a href="#" class="btn btn--yellow">View All Blog Posts</a></p>
+          <p class="t-center no-margin"><a href="<?php echo site_url('/blog');?>" class="btn btn--yellow">View All Blog Posts</a></p>
+          <?php //echo get_the_ID();?>
         </div>
       </div>
     </div>
